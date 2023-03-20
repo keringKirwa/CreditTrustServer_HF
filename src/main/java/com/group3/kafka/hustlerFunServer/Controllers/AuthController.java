@@ -21,7 +21,7 @@ public class AuthController{
        return registerFarmerService.findAll();
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/findFarmerById/{id}")
     public Farmer findById(@PathVariable String id) throws Exception {
         return registerFarmerService.findByFarmerID(id);
 

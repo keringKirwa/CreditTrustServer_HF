@@ -1,25 +1,36 @@
 package com.group3.kafka.hustlerFunServer.Controllers;
 
-import com.group3.kafka.hustlerFunServer.Entities.MyProject;
-import com.group3.kafka.hustlerFunServer.Services.CreateProjectService;
+import com.group3.kafka.hustlerFunServer.Entities.NewProject;
+import com.group3.kafka.hustlerFunServer.Services.ProjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ProjectsController{
     @Autowired
-    CreateProjectService createProjectService;
+    ProjectsService projectsService;
 
     @PostMapping("/createProject")
-    public MyProject registerUser(@RequestBody MyProject myProject) {
-        return createProjectService.create(myProject);
-
-
+    public NewProject createNewProject(@RequestBody NewProject newProject) {
+        return projectsService.createNewProject(newProject);
+    }
+    @GetMapping("/retrieveAllProjects")
+    public NewProject findOneByFarmerID(@PathVariable String farmerID) {
+        return projectsService.findOneByFarmerID(farmerID);
 
     }
 
+    @GetMapping("/getAllFarmersProjects/{farmerId}")
+    public List<NewProject> findAllByFarmerID(@PathVariable String farmerID) {
+        return projectsService.findAllByFarmerID(farmerID);
 
+    }
+    @GetMapping("/getOneFarmersProject/{farmerId}")
+    public List<NewProject> retrieveAllProjects() {
+        return projectsService.retrieveAllProjects();
+
+    }
 
 }

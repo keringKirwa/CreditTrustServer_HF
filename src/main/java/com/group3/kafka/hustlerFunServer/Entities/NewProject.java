@@ -5,12 +5,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document("myProjectsCollection")
-public class MyProject {
+@Document("projectsCollection")
+public class NewProject {
+
     @Id
     private String id;
     private String projectName;
-    private String cropName;
+    private String crop;
     private String farmerId;
 }
 
