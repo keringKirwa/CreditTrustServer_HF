@@ -1,0 +1,62 @@
+version: '3'
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+    networks:
+      - hustlerfundserver_default
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka
+    ports:
+      - "9093:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+    networks:
+      - hustlerfundserver_default
+
+  mongodb:
+    container_name: mongodb_container
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - hustlerfundserver_default
+
+  app:
+    container_name: app
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9093
+    networks:
+      - hustlerfundserver_default
+
+networks:
+  hustlerfundserver_default:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
