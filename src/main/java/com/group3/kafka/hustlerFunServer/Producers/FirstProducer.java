@@ -1,5 +1,7 @@
 package com.group3.kafka.hustlerFunServer.Producers;
 
+import com.group3.kafka.hustlerFunServer.Entities.Message;
+import com.group3.kafka.hustlerFunServer.config.KafkaConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +13,11 @@ public class FirstProducer {
     private static final String TopicONE = "test_topic";
 
     @Autowired
-    private KafkaTemplate<String,String> kafkaTemplate;
+    private KafkaConfig kafkaConfig;
 
-    public void sendMessage(String message){
+    public void sendMessage(Message message){
 
-        this.kafkaTemplate.send(TopicONE,message);
+        this.kafkaConfig.messageKafkaTemplate().send(TopicONE,message);
     }
 
     @Bean

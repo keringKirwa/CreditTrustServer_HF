@@ -19,7 +19,7 @@ public class TestController {
         this.producer = producer;
     }
     @PostMapping("/publishTestMessage")
-    public void messageToTopic(@RequestParam("message") String message){
+    public void messageToTopic(@RequestParam("message") Message message){
 
         this.producer.sendMessage(message);
 

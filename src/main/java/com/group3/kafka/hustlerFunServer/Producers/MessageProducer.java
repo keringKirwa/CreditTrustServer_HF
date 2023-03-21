@@ -7,6 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ When the sendMessage method is called, if the messages-topic doesn't exist yet,
+ * Kafka will create it automatically with the configuration properties specified in the NewTopic bean.
+ */
+
 @Service
 public class MessageProducer {
     private static final String TopicTwo = "messages_topic";
@@ -21,7 +26,6 @@ public class MessageProducer {
 
     @Bean
     public NewTopic createTopicTwo(){
-
         return new NewTopic(TopicTwo,3,(short) 1);
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document("messagesCollection")
+@Document("registeredFarmers")
 public class  Farmer {
     @Id
     private String id;
@@ -18,6 +18,8 @@ public class  Farmer {
     private String county;
     private String constituency;
     private String latitudeAndLongitude;
+    private boolean hasActiveLoan =false;
+    private String activeLoanId;
 
 }
 

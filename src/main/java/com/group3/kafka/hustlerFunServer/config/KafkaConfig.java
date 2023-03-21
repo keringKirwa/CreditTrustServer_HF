@@ -3,6 +3,7 @@ package com.group3.kafka.hustlerFunServer.config;
 import java.util.HashMap;
 import java.util.Map;
 import com.group3.kafka.hustlerFunServer.Entities.Message;
+import com.group3.kafka.hustlerFunServer.Entities.Progress;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -16,31 +17,31 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 public class KafkaConfig {
 
     @Bean
-    public ProducerFactory<String, Message> producerFactory()
-    {
+    public ProducerFactory<String, Message> messageProducerFactory() {
         Map<String, Object> config = new HashMap<>();
-
-        /**
-         *  127.0.0.1:9092 is the default port number for kafka
-         */
-
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "127.0.0.1:9092");
-        config.put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class);
-        config.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
-
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return new DefaultKafkaProducerFactory<>(config);
     }
 
+    @Bean
+    public KafkaTemplate<String, Message> messageKafkaTemplate() {
+        return new KafkaTemplate<>(messageProducerFactory());
+    }
 
     @Bean
-    public KafkaTemplate kafkaTemplate()
-    {
+    public ProducerFactory<String, Progress> progressProducerFactory() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(config);
+    }
 
-        return new KafkaTemplate<>(producerFactory());
+    @Bean
+    public KafkaTemplate<String, Progress> progressKafkaTemplate() {
+        return new KafkaTemplate<>(progressProducerFactory());
     }
 }
+

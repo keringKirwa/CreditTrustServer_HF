@@ -11,8 +11,12 @@ public class NewProject {
     @Id
     private String id;
     private String projectName;
+    private String latestProgressId;
     private String crop;
     private String farmerId;
+    private String loanId;
+    private String cropImage;
+    private  String createdOn;
 }
 
 
