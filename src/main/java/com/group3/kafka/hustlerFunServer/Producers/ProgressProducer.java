@@ -13,17 +13,15 @@ public class ProgressProducer {
     @Autowired
     private KafkaTemplate<String, Progress> progressKafkaTemplate;
 
-
-    public String publishProgressEvent(Progress progress) {
-        progressKafkaTemplate.send(PROGRESS_TOPIC, progress);
-        return "Progress Published Successfully";
-    }
-
     @Bean
     public NewTopic createProgressTopic() {
         return new NewTopic(PROGRESS_TOPIC, 3, (short) 1);
     }
 
 
+    public String publishProgressEvent(Progress progress) {
+        progressKafkaTemplate.send(PROGRESS_TOPIC, progress);
+        return "Progress Published Successfully";
+    }
 }
 

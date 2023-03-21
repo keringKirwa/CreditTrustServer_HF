@@ -3,7 +3,7 @@ package com.group3.kafka.hustlerFunServer.Consumers.MessagesConsumers;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 @Service
-public class ConsumerTwo {
+public class MessagesConsumerTwo {
     private static final String TopicTwo = "messages_topic";
 
     @KafkaListener(topics = TopicTwo ,groupId = "group_id_two")

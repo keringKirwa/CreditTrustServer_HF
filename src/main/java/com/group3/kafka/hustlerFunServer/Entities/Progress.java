@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document("progressCollection")
 public class  Progress {
-
     @Id
     private String id;
     private String projectId;

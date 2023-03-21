@@ -6,7 +6,7 @@ import com.group3.kafka.hustlerFunServer.Entities.Message;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 @Service
-public class ConsumerOne {
+public class MessagesConsumerOne {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String TopicTwo = "messages_topic";
