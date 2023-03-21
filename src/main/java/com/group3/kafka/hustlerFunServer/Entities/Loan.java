@@ -12,11 +12,9 @@ public class  Loan {
     private String projectId;
     private int amountBorrowed;
     private int amountDisbursed = 0 ;
-    private byte disbursementStatus;
+    private byte disbursementStatus = 0 ;
     private byte approvalStatus = 0 ;
     private String nextBatchOn;
-
-
 
 
 }

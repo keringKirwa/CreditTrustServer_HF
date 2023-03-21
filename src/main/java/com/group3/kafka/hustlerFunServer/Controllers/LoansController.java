@@ -27,6 +27,18 @@ public class LoansController{
         return loansService.findAllByFarmerId(farmerID);
 
     }
+    @GetMapping("/findLoanByIDAndCompleteLoanDisbursement/{loanID}")
+    public Loan completeLoanDisbursement (@PathVariable String loanID) throws Exception {
+        return loansService.completeLoanDisbursement(loanID);
+
+    }
+    @GetMapping("/findLoanByIDAndUpdateApprovalStatus/{loanID}")
+    public Loan findLoanByIDAndUpdateApprovalStatus (@PathVariable String loanID) throws Exception {
+        return loansService.findLoanByIDAndUpdateApprovalStatus(loanID, (byte) 1);
+
+    }
+
+
 
 
 
