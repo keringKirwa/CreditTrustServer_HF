@@ -23,7 +23,6 @@ public class ProjectsService {
 
     public List<NewProject> findAllByFarmerID(String farmerID) {
         List<NewProject> projects = projectsRepository.findAllByFarmerId(farmerID);
-        System.out.println("The length  of the farmers  projects is : " + projects.size());
         return projects;
 
     }

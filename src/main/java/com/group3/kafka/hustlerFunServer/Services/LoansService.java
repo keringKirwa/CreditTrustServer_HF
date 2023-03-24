@@ -26,10 +26,14 @@ public class LoansService {
     @Autowired
     private ProjectsRepository projectsRepository;
 
-    public Loan save(Loan loan) {
+    public Loan save(Loan loan) throws Exception {
         Optional<Farmer> farmerOptional = farmerRepository.findById(loan.getFarmerId());
         if (farmerOptional.isPresent()) {
             Farmer farmer = farmerOptional.get();
+            if(farmer.getActiveLoanId() != null ){
+                throw new IllegalStateException("a farmer cannot have 2 loans at one time .");
+
+            }
             Loan savedLoan = loansRepository.save(loan);
 
             farmer.setHasActiveLoan(true);
@@ -38,8 +42,7 @@ public class LoansService {
             return savedLoan;
 
         } else {
-            System.out.println("Farmer with that  id was not found");
-            return null;
+           throw new IllegalStateException("The farmer for that  id was not found .");
         }
 
     }

@@ -14,7 +14,7 @@ public class LoansController{
     LoansService loansService;
 
     @PostMapping("/createLoan")
-    public Loan saveLoan(@RequestBody Loan newLoan) {
+    public Loan saveLoan(@RequestBody Loan newLoan) throws Exception {
         return loansService.save(newLoan);
     }
     @GetMapping("/getActiveLoan/{activeLoanID}")

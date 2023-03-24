@@ -16,6 +16,11 @@ public class RegisterFarmerService {
     private RegisterFarmerRepository registerFarmerRepository;
 
     public Farmer register(Farmer farmer) {
+        Optional<Farmer> optionalFarmer = Optional.ofNullable(registerFarmerRepository.findByEmail(farmer.getEmail()));
+        if (optionalFarmer.isPresent()){
+            throw  new IllegalStateException("A farmer with that emailAddress Already Exists.");
+        }
+
         return registerFarmerRepository.save(farmer);
     }
 
