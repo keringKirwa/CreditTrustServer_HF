@@ -4,22 +4,25 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.group3.kafka.hustlerFunServer.utils.RandomAccountNumberGenerator;
+
 @Data
 @Document("registeredFarmers")
-public class  Farmer {
+public class Farmer {
     @Id
     private String id;
-    private String farmerName;
+    private String name;
+    private String email;
     private String phoneNumber;
     private String nationalID;
-    private String emailAddress;
+    private String accountNumber = new RandomAccountNumberGenerator().generateAccountNumber();
     private String password;
     private String farmSize;
     private String county;
     private String constituency;
-    private String latitudeAndLongitude;
-    private boolean hasActiveLoan =false;
+    private double latitude;
+    private double longitude;
+    private boolean hasActiveLoan = false;
     private String activeLoanId;
 
 }
-

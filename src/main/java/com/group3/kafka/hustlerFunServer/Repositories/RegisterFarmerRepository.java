@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface RegisterFarmerRepository extends MongoRepository<Farmer, String> {
     List<Farmer> findAll();
+     Farmer findByEmail(String emailAddress);
 }

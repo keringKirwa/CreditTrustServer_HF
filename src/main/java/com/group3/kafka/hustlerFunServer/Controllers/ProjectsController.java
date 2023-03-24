@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class ProjectsController{
+public class ProjectsController {
     @Autowired
     ProjectsService projectsService;
 
@@ -16,22 +16,17 @@ public class ProjectsController{
     public NewProject createNewProject(@RequestBody NewProject newProject) {
         return projectsService.createNewProject(newProject);
     }
-    @GetMapping("/retrieveAllProjects")
-    public NewProject findOneByFarmerID(@PathVariable String farmerID) {
-        return projectsService.findOneByFarmerID(farmerID);
 
-    }
-
-    @GetMapping("/getAllFarmersProjects/{farmerId}")
+    @GetMapping("/getAllFarmersProjects/{farmerID}")
     public List<NewProject> findAllByFarmerID(@PathVariable String farmerID) {
         return projectsService.findAllByFarmerID(farmerID);
 
     }
+
     @GetMapping("/getOneFarmersProject/{farmerId}")
     public List<NewProject> retrieveAllProjects() {
         return projectsService.retrieveAllProjects();
 
     }
-
 
 }

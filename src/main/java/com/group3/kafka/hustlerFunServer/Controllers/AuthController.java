@@ -1,6 +1,7 @@
 package com.group3.kafka.hustlerFunServer.Controllers;
 
 import com.group3.kafka.hustlerFunServer.Entities.Farmer;
+import com.group3.kafka.hustlerFunServer.Entities.LoginDetails;
 import com.group3.kafka.hustlerFunServer.Services.RegisterFarmerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,17 +9,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class AuthController{
+public class AuthController {
     @Autowired
     RegisterFarmerService registerFarmerService;
 
     @PostMapping("/register")
-    public  Farmer registerUser(@RequestBody Farmer farmer) {
+    public Farmer registerUser(@RequestBody Farmer farmer) {
         return registerFarmerService.register(farmer);
     }
+
+    @PostMapping("/login")
+    public Farmer login(@RequestBody LoginDetails loginDetails) throws Exception {
+
+        return registerFarmerService.login(loginDetails);
+    }
+
     @GetMapping("/getAllFarmers")
     public List<Farmer> getAllFarmers() {
-       return registerFarmerService.findAll();
+        return registerFarmerService.findAll();
     }
 
     @GetMapping("/findFarmerById/{id}")
@@ -26,8 +34,5 @@ public class AuthController{
         return registerFarmerService.findByFarmerID(id);
 
     }
-
-
-
 
 }

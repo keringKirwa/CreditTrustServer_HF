@@ -1,9 +1,11 @@
 package com.group3.kafka.hustlerFunServer.Services;
 
+import com.group3.kafka.hustlerFunServer.Entities.Farmer;
 import com.group3.kafka.hustlerFunServer.Entities.Loan;
 import com.group3.kafka.hustlerFunServer.Entities.NewProject;
 import com.group3.kafka.hustlerFunServer.Repositories.LoansRepository;
 import com.group3.kafka.hustlerFunServer.Repositories.ProjectsRepository;
+import com.group3.kafka.hustlerFunServer.Repositories.RegisterFarmerRepository;
 import com.group3.kafka.hustlerFunServer.utils.NextDisbursementDateGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,19 +14,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class  LoansService {
+public class LoansService {
     @Autowired
     private LoansRepository loansRepository;
+
+    @Autowired
+    private RegisterFarmerRepository farmerRepository;
+
     @Autowired
     private NextDisbursementDateGenerator nextDisbursementDateGenerator;
     @Autowired
     private ProjectsRepository projectsRepository;
 
-
-
     public Loan save(Loan loan) {
+        Optional<Farmer> farmerOptional = farmerRepository.findById(loan.getFarmerId());
+        if (farmerOptional.isPresent()) {
+            Farmer farmer = farmerOptional.get();
+            Loan savedLoan = loansRepository.save(loan);
 
-        return loansRepository.save(loan);
+            farmer.setHasActiveLoan(true);
+            farmer.setActiveLoanId(savedLoan.getId());
+            farmerRepository.save(farmer);
+            return savedLoan;
+
+        } else {
+            System.out.println("Farmer with that  id was not found");
+            return null;
+        }
+
     }
 
     public List<Loan> findAllByFarmerId(String farmerID) {
@@ -58,18 +75,19 @@ public class  LoansService {
             throw new Exception("Loan with that ID was not found.");
         }
     }
+
     public Loan findLoanByIDAndUpdateApprovalStatus(String activeLoanID, byte approvalStatus) throws Exception {
 
         Optional<Loan> optionalLoan = loansRepository.findById(activeLoanID);
 
         if (optionalLoan.isPresent()) {
-            Loan loan=optionalLoan.get();
+            Loan loan = optionalLoan.get();
 
             Optional<NewProject> optionalNewProject = projectsRepository.findById(loan.getProjectId());
 
             if (optionalNewProject.isPresent()) {
 
-                NewProject newProject =optionalNewProject.get();
+                NewProject newProject = optionalNewProject.get();
 
                 loan.setApprovalStatus(approvalStatus);
                 loan.setAmountDisbursed(loan.getAmountBorrowed() / 2);
@@ -77,10 +95,9 @@ public class  LoansService {
                 loan.setNextBatchOn(nextDisbursementDateGenerator.getNextLoanBatchDate(newProject.getNumberOfMonths()));
                 return loansRepository.save(loan);
 
-            }else {
+            } else {
                 throw new Exception("Project for this Loan was not found.");
             }
-
 
         } else {
             throw new Exception("Loan with that ID was not found.");
