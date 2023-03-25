@@ -42,7 +42,7 @@ public class LoansService {
             return savedLoan;
 
         } else {
-           throw new IllegalStateException("The farmer for that  id was not found .");
+           throw new IllegalStateException("The farmer with this id  was not found .");
         }
 
     }

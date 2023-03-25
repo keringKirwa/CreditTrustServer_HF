@@ -24,5 +24,6 @@ public class Farmer {
     private double longitude;
     private boolean hasActiveLoan = false;
     private String activeLoanId;
+    private int numberOfProjects = 0;
 
 }
