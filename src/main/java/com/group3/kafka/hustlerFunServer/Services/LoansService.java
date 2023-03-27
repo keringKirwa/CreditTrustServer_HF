@@ -3,11 +3,14 @@ package com.group3.kafka.hustlerFunServer.Services;
 import com.group3.kafka.hustlerFunServer.Entities.Farmer;
 import com.group3.kafka.hustlerFunServer.Entities.Loan;
 import com.group3.kafka.hustlerFunServer.Entities.NewProject;
+import com.group3.kafka.hustlerFunServer.Entities.Notification;
 import com.group3.kafka.hustlerFunServer.Repositories.LoansRepository;
+import com.group3.kafka.hustlerFunServer.Repositories.NotificationsRepository;
 import com.group3.kafka.hustlerFunServer.Repositories.ProjectsRepository;
 import com.group3.kafka.hustlerFunServer.Repositories.RegisterFarmerRepository;
 import com.group3.kafka.hustlerFunServer.utils.NextDisbursementDateGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,14 @@ import java.util.Optional;
 
 @Service
 public class LoansService {
+    @Autowired
+    MongoTemplate mongoTemplate;
+
+    public List<Loan> getAllLoanDocuments() {
+        List<Loan> loans = mongoTemplate.findAll(Loan.class, "loansCollection");
+        return loans;
+    }
+
     @Autowired
     private LoansRepository loansRepository;
 
@@ -25,13 +36,15 @@ public class LoansService {
     private NextDisbursementDateGenerator nextDisbursementDateGenerator;
     @Autowired
     private ProjectsRepository projectsRepository;
+    @Autowired
+    private NotificationsRepository notificationsRepository;
 
     public Loan save(Loan loan) throws Exception {
         Optional<Farmer> farmerOptional = farmerRepository.findById(loan.getFarmerId());
         if (farmerOptional.isPresent()) {
             Farmer farmer = farmerOptional.get();
-            if(farmer.getActiveLoanId() != null ){
-                throw new IllegalStateException("a farmer cannot have 2 loans at one time .");
+            if (farmer.getActiveLoanId() != null) {
+                throw new IllegalStateException("You have an active loan. Please wait until  this loan is settled.");
 
             }
             Loan savedLoan = loansRepository.save(loan);
@@ -42,7 +55,7 @@ public class LoansService {
             return savedLoan;
 
         } else {
-           throw new IllegalStateException("The farmer with this id  was not found .");
+            throw new IllegalStateException("The farmer with this id  was not found .");
         }
 
     }
@@ -92,7 +105,20 @@ public class LoansService {
 
                 NewProject newProject = optionalNewProject.get();
 
+                Farmer farmer = farmerRepository.findById(newProject.getFarmerId()).get();
+
                 loan.setApprovalStatus(approvalStatus);
+                Notification notification=new Notification();
+                notification.setFarmerId(farmer.getId());
+                notification.setMessage("Hello Mr "+ farmer.getName() + ", Your loan "+ "of Ksh "+loan.getAmountBorrowed()+" for the project "+newProject.getProjectName()+" Has been approved.Please Check you account for the same .");
+                notificationsRepository.save(notification);
+
+                Notification loanDisbursementNotification=new Notification();
+                loanDisbursementNotification.setFarmerId(farmer.getId());
+
+                loanDisbursementNotification.setMessage("Hello Mr "+ farmer.getName() + " ,The first batch of Your loan "+ "of Ksh "+loan.getAmountBorrowed()+" for the project "+newProject.getProjectName()+" Has been Disbursed.Please Check you account within 24  hours .");
+                notificationsRepository.save(loanDisbursementNotification);
+
                 loan.setAmountDisbursed(loan.getAmountBorrowed() / 2);
                 loan.setDisbursementStatus((byte) 1);
                 loan.setNextBatchOn(nextDisbursementDateGenerator.getNextLoanBatchDate(newProject.getNumberOfMonths()));
