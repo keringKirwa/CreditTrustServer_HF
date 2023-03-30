@@ -1,4 +1,4 @@
  lsof -i :8080   -  identifies all processes running on port 8080.
  kill $(lsof -t -i :8080) kills all processes running on ports 8080.
 
- kill -9 51767  (pass teh pid here ).
+ kill -9 51767  (pass the pid here ).

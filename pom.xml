@@ -8,10 +8,10 @@
 		<version>2.3.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.group3.kafka</groupId>
-	<artifactId>springboot-kafka-docker</artifactId>
+	<groupId>com.example.hustler_fund_server</groupId>
+	<artifactId>hustler_fund_server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springboot-kafka-docker</name>
+	<name>hustler_fund_server</name>
 	<description>The server For a  loan lending system</description>
 
 	<properties>
@@ -74,6 +74,13 @@
           </annotationProcessorPaths>
         </configuration>
       </plugin>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<configuration>
+				<mainClass>com.example.hustler_fund_server.SpringbootKafkaDockerApplication</mainClass>
+			</configuration>
+		</plugin>
      
     </plugins>
   </build>
