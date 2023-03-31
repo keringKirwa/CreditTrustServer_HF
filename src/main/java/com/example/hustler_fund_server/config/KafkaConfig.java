@@ -13,6 +13,11 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+/**
+ * in this  program here , we are setting up 2 kafka templates , one for producinng messges of type  Message
+ * and the other for producing messages of type  Progress.
+ */
+
 @Configuration
 public class KafkaConfig {
 

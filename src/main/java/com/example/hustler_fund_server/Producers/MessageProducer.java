@@ -24,9 +24,5 @@ public class MessageProducer {
         return "Published Successfully";
     }
 
-    @Bean
-    public NewTopic createTopicTwo(){
-        return new NewTopic(TopicTwo,3,(short) 1);
-    }
 }
 
