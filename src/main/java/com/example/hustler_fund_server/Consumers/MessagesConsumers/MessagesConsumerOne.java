@@ -11,7 +11,7 @@ public class MessagesConsumerOne {
 
     private static final String TopicTwo = "messages_topic";
 
-    @KafkaListener(topics = TopicTwo ,groupId = "group_id_two")
+    @KafkaListener(topics = TopicTwo ,groupId = "group_id_messages")
     public void consumeMessage(String messageString) throws JsonProcessingException {
         Message messageObject = objectMapper.readValue(messageString, Message.class);
         System.out.println("Consumer One +++++>>>  : " +messageObject.getStringMessage());

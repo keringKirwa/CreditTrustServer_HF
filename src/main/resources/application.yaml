@@ -1,4 +1,13 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/hustlersFundDatabase
+      uri: mongodb://mongodb:27017/hustlersFundDatabase
+  kafka:
+   consumer:
+    bootstrap-servers: "kafka:29092"
+    auto-offset-reset: earliest
+    properties:
+        retention.ms:
+
+
+

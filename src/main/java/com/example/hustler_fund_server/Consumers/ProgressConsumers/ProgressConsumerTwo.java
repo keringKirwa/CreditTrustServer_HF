@@ -17,7 +17,7 @@ public class ProgressConsumerTwo  {
 
     private static final String TOPIC_TWO = "progress_topic";
 
-    @KafkaListener(topics = TOPIC_TWO ,groupId = "progress_group_id")
+    @KafkaListener(topics = TOPIC_TWO ,groupId = "group_id_progress")
     public void consumeProgressEvents(String progressString) throws JsonProcessingException {
         Progress progressEvent = objectMapper.readValue(progressString, Progress.class);
         progressService.save(progressEvent);

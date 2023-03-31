@@ -1,9 +1,7 @@
 package com.example.hustler_fund_server.Producers;
 
 import com.example.hustler_fund_server.Entities.Message;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
